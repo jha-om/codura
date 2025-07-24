@@ -2,7 +2,12 @@ import { currentUser } from "@clerk/nextjs/server"
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../convex/_generated/api";
 import Link from "next/link";
-import { Blocks, Code2 } from "lucide-react";
+import { Blocks, Code2, Sparkles } from "lucide-react";
+import { SignedIn } from "@clerk/nextjs";
+import ThemeSelector from "./theme-selector";
+import LanguageSelector from "./language-selector";
+import RunButton from "./run-button";
+import HeaderProfileBtn from "./header-profile-btn";
 
 export default async function Header() {
     const user = await currentUser();
@@ -55,12 +60,32 @@ export default async function Header() {
                         </Link>
                     </nav>
                 </div>
-            </div>
+                <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
+                        <ThemeSelector />
+                        <LanguageSelector hasAccess={Boolean(convexUser?.isPro)} />
+                    </div>
 
-            <div className="flex items-center gap-4">
-                <div className="flex items-center gap-3">
-                    {/* <ThemeSelector />
-                    <LanguageSelector hasAccess={Boolean(convexUser?.isPro)} /> */}
+                    {!convexUser?.isPro && (
+                        <Link
+                            href="/pricing"
+                            className="flex items-center gap-2 px-4 py-1.5 rounded-lg border border-blue-500 hover:border-blue-500/80 hover:bg-transparent 
+                transition-all duration-300"
+                        >
+                            <Sparkles className="w-4 h-4 text-blue-500 hover:text-blue-400" />
+                            <span className="text-sm font-medium text-blue-400/90 hover:text-blue-400">
+                                Pro
+                            </span>
+                        </Link>
+                    )}
+
+                    <SignedIn>
+                        <RunButton />
+                    </SignedIn>
+
+                    <div className="pl-3 border-l border-gray-800">
+                        <HeaderProfileBtn />
+                    </div>
                 </div>
             </div>
         </div>
