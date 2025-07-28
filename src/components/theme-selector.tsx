@@ -1,6 +1,6 @@
 function  ThemeSelector() {
     return (
-        <div>theme-selector</div>
+        <div>Theme-selector</div>
     )
 }
 
